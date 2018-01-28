@@ -53,7 +53,9 @@ bool can_be_extended(const vector<vector<int>> &x, int &i, int &j) {
 }
 
 void extend(vector<vector<int>> &x, int n, int count, int i, int j) {
+    cout << "COUNT AT START: " << count << " position: " << i << ' ' << j << '\n';
     if(count == n) {
+        cout << "DONE" << '\n';
         for(int i=0; i < x.size(); i++) {
             for(int j=0; j < x[i].size(); j++) {
                 cout << x[i][j] << ' ';
@@ -63,27 +65,42 @@ void extend(vector<vector<int>> &x, int n, int count, int i, int j) {
         exit(0);
     }
 
-    if(x[i][j] == -1) {
-        x[i][j] = 1; 
+    if(i = x.size() - 1 && j == x[i].size() - 1 && x[i][j] != -1) return;
+
+    for(int z=1; z <= 3; z++) {
+        cout << "Z: " << z << '\n';
+        x[i][j] = z;
         if(can_be_extended(x, i, j)) {
-            extend(x, n, ++count, i, j);
-        }
-        if(x[i][j] == 1) {
-            x[i][j] = 2;
-            if(can_be_extended(x, i, j)) {
-                extend(x, n, ++count, i, j);
-            }
-            if(x[i][j] == 2) {
-                x[i][j] = 0;
-                if(can_be_extended(x, i, j)) {
-                    extend(x, n, count, i, j);
-                }
-                x[i][j] = -1;
-                /* checkBackwards(x, i, j); */
-                count--;
-            }
+            z < 3 ? extend(x, n, ++count, i, j) : extend(x, n, count, i, j);
+            if(z != 3) --count;
         }
     }
+
+    /* checkBackwards(x, i, j); */
+    x[i][j] = -1;
+    return;
+
+    /* if(x[i][j] == -1) { */
+    /*     x[i][j] = 1; */ 
+    /*     if(can_be_extended(x, i, j)) { */
+    /*         extend(x, n, ++count, i, j); */
+    /*     } */
+    /*     if(x[i][j] == 1) { */
+    /*         x[i][j] = 2; */
+    /*         if(can_be_extended(x, i, j)) { */
+    /*             extend(x, n, ++count, i, j); */
+    /*         } */
+    /*         if(x[i][j] == 2) { */
+    /*             x[i][j] = 0; */
+    /*             if(can_be_extended(x, i, j)) { */
+    /*                 extend(x, n, count, i, j); */
+    /*             } */
+    /*             x[i][j] = -1; */
+    /*             /1* checkBackwards(x, i, j); *1/ */
+    /*             count--; */
+    /*         } */
+    /*     } */
+    /* } */
 }
 
 int main() {
